@@ -35,7 +35,6 @@ const registerUser = async (req, res) => {
 }
 
 const loginUser=async(req,res)=>{
-
   try{
     const {email,password}=req.body
   const user=await User.findOne({email})
@@ -49,21 +48,21 @@ const loginUser=async(req,res)=>{
   const isMatch=await bcrypt.compare(password,user.password)
   if(!isMatch){
     return res.status(400).json({
-      message:'Invalid credentials'
+      message:'Invalid credentials',
     })
   }
   res.status(200).json({
-    message:'Login successful',
+    message:'Login successfull',
     token:generateToken(user._id),
     role:user.role,
   })
   }
-
-  catch(error){
+  catch(err){
     res.status(500).json({
-      message:error.message,
+      message:err.message,
     })
   }
+  
 }
 
 module.exports = { registerUser,loginUser }
