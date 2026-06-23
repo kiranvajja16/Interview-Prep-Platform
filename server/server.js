@@ -1,24 +1,24 @@
-const dotEnv=require('dotenv')
+require('dotenv').config()
+
 const express = require('express')
-const connectDB=require('./config/db')
-const User=require('./models/User')
+const connectDB = require('./config/db')
 
-console.log(User)
+const authRoutes = require('./routes/authRoutes')
 
-dotEnv.config()
+const app = express()
 
-const app=express()
-
-connectDB();
+connectDB()
 
 app.use(express.json())
 
-app.get('/',(req,res)=> {
-    res.send("Server Running")
+app.use('/api/auth', authRoutes)
+
+app.get('/', (req, res) => {
+  res.send('Server Running')
 })
 
-const PORT= process.env.PORT||5000
+const PORT = process.env.PORT || 5000
 
-app.listen(PORT,()=>{
-    console.log(`Server running on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
 })
