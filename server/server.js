@@ -1,6 +1,9 @@
 const dotEnv=require('dotenv')
 const express = require('express')
 const connectDB=require('./config/db')
+const User=require('./models/User')
+
+console.log(User)
 
 dotEnv.config()
 
