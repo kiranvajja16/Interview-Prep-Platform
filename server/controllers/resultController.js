@@ -26,7 +26,7 @@ const submitQuiz=async(req,res)=>{
             totalQuestions:quiz.questions.length,
             percentage:(score/quiz.questions.length)*100,
         })
-        res.status(201),json(result)
+        res.status(201).json(result)
 
     }
     catch(err){
