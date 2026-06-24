@@ -13,8 +13,8 @@ connectDB()
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
-app.use('./api/admin',adminRoutes)
-app.use('./api/quizzes',quizRoutes)
+app.use('/api/admin',adminRoutes)
+app.use('/api/quizzes',quizRoutes)
 
 app.get('/', (req, res) => {
   res.send('Server Running')
