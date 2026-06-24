@@ -29,7 +29,9 @@ const quizSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
     },
-    question:[questionSchema],
+    questions:[questionSchema],
 },{timestamps:true,})
 
-module.exports=mongoose.model('Quiz',quizSchema)
+module.exports =
+  mongoose.models.Quiz ||
+  mongoose.model('Quiz', quizSchema)
