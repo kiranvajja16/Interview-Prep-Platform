@@ -6,6 +6,7 @@ const connectDB = require('./config/db')
 const authRoutes = require('./routes/authRoutes')
 const adminRoutes=require('./routes/adminRoutes')
 const quizRoutes=require('./routes/quizRoutes')
+const resultRoutes=require('./routes/resultRoutes')
 const app = express()
 
 connectDB()
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/quizzes',quizRoutes)
+app.use('/api/results',resultRoutes)
 
 app.get('/', (req, res) => {
   res.send('Server Running')

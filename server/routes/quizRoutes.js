@@ -1,7 +1,7 @@
 const express = require('express')
 
 const {
-  createQuiz,
+  createQuiz,getAllQuizzes,getQuizById,updateQuiz,deleteQuiz
 } = require('../controllers/quizController')
 
 const {
@@ -20,5 +20,9 @@ router.post(
   authorizeRoles('instructor'),
   createQuiz
 )
+router.get('/',protect,getAllQuizzes)
+router.get('/:id',protect,getQuizById)
+router.put('/:id',protect,authorizeRoles('instructor'),updateQuiz)
+router.delete('/:id',protect,authorizeRoles('instructor'),deleteQuiz)
 
 module.exports = router
