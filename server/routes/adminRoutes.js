@@ -1,10 +1,10 @@
 const express=require('express')
-const {protect}=require('../middle/authMiddleware')
+const {protect}=require('../middleware/authMiddleware')
 const {authorizeRoles}=require('../middleware/roleMiddleware')
 
 
 const router=express.Router()
-router.get('/dashboard',protect,authorizRoles('admin'),(req,res)=>{
+router.get('/dashboard',protect,authorizeRoles('admin'),(req,res)=>{
     res.json({
         message:'Welcome Admin',
     })
