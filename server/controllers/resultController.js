@@ -36,6 +36,40 @@ const submitQuiz=async(req,res)=>{
     }
 }
 
+const getMyResults=async(req,res)=>{
+    try{
+        const results=await Result.find({
+            candidate:req.user._id,  
+        }).populate('quiz','title')
+    }
+    catch(err){
+        res.status(500).json({
+            message:err.message,
+        })
+    }
+}
+
+const getResultById=async(req,res)=>{
+    try{
+        const result=await Result.findById(req.params.id)
+        .populate('candidate','name email').populate('quiz','title')
+
+        if(!result){
+            return res.status(400).json({
+                message:'Result not found',
+            })
+        }
+        res.json(result)
+    }
+    catch(err){
+        res.status(500).json({
+            message:err.message,
+        })
+    }
+}
+
 module.exports={
     submitQuiz,
+    getMyResults,
+    getResultById,
 }
