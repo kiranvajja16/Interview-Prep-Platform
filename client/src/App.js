@@ -9,6 +9,8 @@ import InstructorDashboard from './pages/InstructorDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import QuizPage from './pages/QuizPage'
 import Results from './pages/Results'
+import EditQuiz from './pages/EditQuiz'
+
 
 function App(){
   return(
@@ -33,13 +35,18 @@ function App(){
     </ProtectedRoute>
   }/>
           <Route
-  path="/create-quiz"
-  element={
-    <ProtectedRoute allowedRoles={['instructor']}>
-      <CreateQuiz />
-    </ProtectedRoute>
-  }
+          path="/create-quiz"
+          element={
+          <ProtectedRoute allowedRoles={['instructor']}>
+            <CreateQuiz />
+           </ProtectedRoute>
+         }
 />
+          <Route path="/edit-quiz/:id" element={
+            <ProtectedRoute allowedRoles={['instructor']}>
+                <EditQuiz/>
+            </ProtectedRoute>
+          }/>
           <Route path="/quiz/:id" element={<QuizPage/>}/>
           <Route path="/results" element={<Results/>}/>
       </Routes>
