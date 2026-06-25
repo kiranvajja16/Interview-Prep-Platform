@@ -52,10 +52,15 @@ const loginUser=async(req,res)=>{
     })
   }
   res.status(200).json({
-    message:'Login successfull',
-    token:generateToken(user._id),
-    role:user.role,
-  })
+  message: 'Login successful',
+  token: generateToken(user._id),
+  user: {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  },
+})
   }
   catch(err){
     res.status(500).json({
