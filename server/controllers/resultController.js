@@ -41,6 +41,7 @@ const getMyResults=async(req,res)=>{
         const results=await Result.find({
             candidate:req.user._id,  
         }).populate('quiz','title')
+        res.status(200).json(results)
     }
     catch(err){
         res.status(500).json({
