@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react'
+import { useCallback, useEffect,useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
@@ -10,8 +10,28 @@ const InstructorDashboard = () => {
 
   const [quizzes,setQuizzes] = useState([])
 
-  useEffect(()=>{
-    const fetchQuizzes = async ()=>{
+  const handleDelete = async id => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this quiz?'
+    )
+    if(!confirmDelete){
+      return
+    }
+    try{
+      await api.delete(`/quizzes/${id}`,{
+        headers:{
+          Authorization:`Bearer ${token}`,
+        },
+      })
+      alert('Quiz deleted successfully')
+      fetchQuizzes()
+    }
+    catch(err){
+      console.log(err)
+      alert('Failed to delete quiz')
+    }
+  }
+   const fetchQuizzes =useCallback( async ()=>{
     try{
       const response= await api.get('/quizzes',{
         headers:{
@@ -23,9 +43,11 @@ const InstructorDashboard = () => {
     catch(err){
       console.log(err)
     }
-  }
-    fetchQuizzes()
   },[token])
+
+  useEffect(()=>{
+    fetchQuizzes()
+  },[fetchQuizzes])
 
   
 
@@ -43,13 +65,13 @@ const InstructorDashboard = () => {
 
       <hr/>
       {quizzes.map(quiz=>(
-        <div key={quiz.id}>
+        <div key={quiz._id}>
           <h3>{quiz.title}</h3>
           <p>{quiz.description}</p>
           <button onClick={()=> navigate(`/edit-quiz/${quiz._id}`)}>
             Edit
           </button>
-          <button>
+          <button onClick={()=>handleDelete(quiz._id)}>
             Delete
           </button>
         </div>
