@@ -1,15 +1,52 @@
 import {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, useNavigate} from 'react-router-dom'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
 
 const QuizPage = () => {
+  const navigate=useNavigate()
   const {id} = useParams()
   const {token} = useAuth()
 
   const [quiz, setQuiz] = useState(null)
+  const [selectedAnswers, setSelectedAnswers] = useState({})
 
+  const handleAnswerChange = (questionId, answer) => {
+  setSelectedAnswers(prev => ({
+    ...prev,
+    [questionId]: answer,
+  }))
+  }
+
+  const handleSubmit = async ()=>{
+    if(Object.keys(selectedAnswers).length!==quiz.questions.length){
+      alert('Please answer all questions')
+      return
+    }
+
+    try{
+      const answers=quiz.questions.map(
+        question => selectedAnswers[question._id]
+      )
+
+      const response=await api.post('/results/submit',{quizId:quiz._id,answers},
+        {
+          headers:{
+            Authorization:`Bearer ${token}`,
+          }
+        }
+      )
+      console.log(response.data)
+      alert('Quiz submitted successfully!')
+      navigate('/results')
+    }
+    catch(err){
+      console.log(err)
+      alert('Failed to submit quiz')
+    }
+  }
   useEffect(() => {
+    
     const fetchQuiz = async () => {
     try {
       const response = await api.get(`/quizzes/${id}`, {
@@ -40,7 +77,7 @@ const QuizPage = () => {
       <p>{quiz.description}</p>
 
       {quiz.questions?.map((question, index) => (
-        <div key={index}>
+        <div key={question._id}>
           <h3>
             {index + 1}. {question.question}
           </h3>
@@ -49,8 +86,10 @@ const QuizPage = () => {
             <label key={optionIndex}>
               <input
                 type="radio"
-                name={`question-${index}`}
+                name={question._id}
                 value={option}
+                checked={selectedAnswers[question._id] === option}
+                onChange={() => handleAnswerChange(question._id, option)}
               />
                 {option}
             </label>
@@ -59,6 +98,9 @@ const QuizPage = () => {
           <hr />
         </div>
       ))}
+      <button onClick={handleSubmit}>
+        Submit Quiz
+      </button>
     </div>
   )
 }
