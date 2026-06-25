@@ -4,7 +4,7 @@ const generateToken=require('../utils/generateToken')
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body
+    const { name, email, password,} = req.body
 
     const existingUser = await User.findOne({ email })
 
