@@ -9,10 +9,7 @@ const Results = () => {
   const [results,setResults]=useState([])
 
   useEffect(()=>{
-    fetchResults()
-  },[])
-
-  const fetchResults=async ()=>{
+    const fetchResults=async ()=>{
     try{
         const response= await api.get('/results/my-results',{
           headers:{
@@ -26,6 +23,10 @@ const Results = () => {
       alert('Failed to load results')
     }
   }
+    fetchResults()
+  },[token])
+
+  
 
   return(
     <div>

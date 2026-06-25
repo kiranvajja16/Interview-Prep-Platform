@@ -1,6 +1,7 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import ProtectedRoute  from './components/ProtectedRoute'
 
+import CreateQuiz from './pages/CreateQuiz'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import CandidateDashboard from './pages/CandidateDashboard'
@@ -31,6 +32,14 @@ function App(){
       <AdminDashboard />
     </ProtectedRoute>
   }/>
+          <Route
+  path="/create-quiz"
+  element={
+    <ProtectedRoute allowedRoles={['instructor']}>
+      <CreateQuiz />
+    </ProtectedRoute>
+  }
+/>
           <Route path="/quiz/:id" element={<QuizPage/>}/>
           <Route path="/results" element={<Results/>}/>
       </Routes>
