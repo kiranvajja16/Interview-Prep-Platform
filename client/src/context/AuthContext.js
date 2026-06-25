@@ -3,7 +3,10 @@ import { createContext,useContext,useEffect,useState } from "react";
 const AuthContext=createContext()
 
 export const AuthProvider =({children})=>{
-    const [user,setUser]=useState(null)
+    const [user,setUser]=useState(()=>{
+        const storedUser=localStorage.getItem('user')
+        return storedUser ? JSON.parse(storedUser):null
+    })
     const [token,setToken]=useState(localStorage.getItem('token')|| '')
 
     useEffect(()=>{
@@ -13,7 +16,15 @@ export const AuthProvider =({children})=>{
         else{
             localStorage.removeItem('token')
         }
-    },[token])
+
+        if(user){
+            localStorage.setItem('user',JSON.stringify(user))
+        }
+        else{
+            localStorage.removeItem('user')
+        }
+
+    },[token,user])
 
     const login = (userData,jwtToken)=>{
         setUser(userData)

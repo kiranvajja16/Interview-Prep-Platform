@@ -8,7 +8,6 @@ const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('candidate')
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -62,23 +61,6 @@ const Register = () => {
 
         <br />
         <br />
-
-        <select
-          value={role}
-          onChange={e => setRole(e.target.value)}
-        >
-          <option value="candidate">
-            Candidate
-          </option>
-
-          <option value="instructor">
-            Instructor
-          </option>
-        </select>
-
-        <br />
-        <br />
-
         <button type="submit">
           Register
         </button>

@@ -1,4 +1,5 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
+import ProtectedRoute  from './components/ProtectedRoute'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -15,9 +16,21 @@ function App(){
           <Route path="/" element={<Login/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
-          <Route path="/candidate" element={<CandidateDashboard/>}/>
-          <Route path="/instructor" element={<InstructorDashboard/>}/>
-          <Route path="/admin" element={<AdminDashboard/>}/>
+          <Route path="/candidate"  element={
+    <ProtectedRoute allowedRoles={['candidate']}>
+      <CandidateDashboard />
+    </ProtectedRoute>
+  }/>
+          <Route path="/instructor" element={
+    <ProtectedRoute allowedRoles={['instructor']}>
+      <InstructorDashboard />
+    </ProtectedRoute>
+  }/>
+          <Route path="/admin" element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }/>
           <Route path="/quiz/:id" element={<QuizPage/>}/>
           <Route path="/results" element={<Results/>}/>
       </Routes>
