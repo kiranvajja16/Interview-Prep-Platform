@@ -4,6 +4,8 @@ import Layout from '../../components/Layout'
 import CustomButton from '../../components/CustomButton'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
+import {toast} from 'react-toastify'
+import Loader from '../../components/Loader'
 
 import './index.css'
 
@@ -46,7 +48,7 @@ const EditQuiz = () => {
       setLoading(false)
     } catch (err) {
       console.log(err)
-      alert('Failed to load quiz')
+      toast.error('Failed to load quiz')
       navigate('/instructor')
     }
   }
@@ -147,7 +149,7 @@ const EditQuiz = () => {
 
   const removeQuestion = index => {
     if (questions.length === 1) {
-      alert('At least one question is required.')
+      toast.warning('At least one question is required.')
       return
     }
 
@@ -184,13 +186,13 @@ const EditQuiz = () => {
         }
       )
 
-      alert('Quiz updated successfully.')
+      toast.success('Quiz updated successfully.')
 
       navigate('/instructor')
     } catch (err) {
       console.log(err)
 
-      alert(
+      toast.error(
         err.response?.data?.message ||
           'Failed to update quiz.'
       )
@@ -200,7 +202,7 @@ const EditQuiz = () => {
   if (loading) {
     return (
       <Layout>
-        <h2>Loading...</h2>
+        <Loader />
       </Layout>
     )
   }

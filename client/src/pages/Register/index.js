@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import api from '../../services/api'
 import CustomButton from '../../components/CustomButton'
 import './index.css'
+import {toast} from 'react-toastify'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -21,10 +22,10 @@ const Register = () => {
         password,
       })
 
-      alert('Registration Successful!')
+      toast.success('Registration Successful!')
       navigate('/login')
     } catch (err) {
-      alert(err.response?.data?.message || 'Registration Failed')
+      toast.error(err.response?.data?.message || 'Registration Failed')
     }
   }
 

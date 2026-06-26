@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import Layout from '../../components/Layout'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
+import Loader from '../../components/Loader'
 
 import './index.css'
 
@@ -57,7 +58,7 @@ const Results = () => {
     return (
       <Layout>
 
-        <h2>Loading Results...</h2>
+        <Loader />
 
       </Layout>
     )

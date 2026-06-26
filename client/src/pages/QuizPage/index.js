@@ -3,6 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom'
 import Layout from '../../components/Layout'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
+import {toast} from 'react-toastify'
+import Loader from '../../components/Loader'
 
 import './index.css'
 
@@ -41,7 +43,7 @@ const QuizPage = () => {
     } catch (err) {
       console.log(err)
 
-      alert('Failed to load quiz.')
+      toast.error('Failed to load quiz.')
 
       navigate('/candidate')
     }
@@ -70,7 +72,7 @@ const QuizPage = () => {
       Object.keys(selectedAnswers).length !==
       quiz.questions.length
     ) {
-      alert(
+      toast.info(
         'Please answer all questions.'
       )
 
@@ -96,7 +98,7 @@ const QuizPage = () => {
         }
       )
 
-      alert(
+      toast.success(
         'Quiz submitted successfully.'
       )
 
@@ -104,7 +106,7 @@ const QuizPage = () => {
     } catch (err) {
       console.log(err)
 
-      alert(
+      toast.error(
         err.response?.data?.message ||
           'Failed to submit quiz.'
       )
@@ -119,7 +121,7 @@ const QuizPage = () => {
     return (
       <Layout>
 
-        <h2>Loading Quiz...</h2>
+        <Loader />
 
       </Layout>
     )

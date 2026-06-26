@@ -4,6 +4,7 @@ import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
 import CustomButton from '../../components/CustomButton'
 import './index.css'
+import {toast} from 'react-toastify'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -30,8 +31,9 @@ const Login = () => {
       } else {
         navigate('/candidate')
       }
+      toast.success('Login Successfull')
     } catch (err) {
-      alert(err.response?.data?.message || 'Login Failed')
+      toast.error(err.response?.data?.message || 'Login Failed')
     }
   }
 

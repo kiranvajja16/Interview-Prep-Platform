@@ -1,5 +1,7 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import ProtectedRoute  from './components/ProtectedRoute'
+import { ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import CreateQuiz from './pages/CreateQuiz'
 import Login from './pages/Login'
@@ -50,6 +52,16 @@ function App(){
           <Route path="/quiz/:id" element={<QuizPage/>}/>
           <Route path="/results" element={<Results/>}/>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </BrowserRouter>
   )
 }

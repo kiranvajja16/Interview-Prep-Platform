@@ -5,6 +5,7 @@ import {useAuth} from '../../context/AuthContext'
 import Layout from '../../components/Layout'
 import CustomButton from '../../components/CustomButton'
 import QuizCard from '../../components/QuizCard'
+import {toast} from 'react-toastify'
 
 const InstructorDashboard = () => {
   const {user, token,logout} = useAuth()
@@ -25,12 +26,12 @@ const InstructorDashboard = () => {
           Authorization:`Bearer ${token}`,
         },
       })
-      alert('Quiz deleted successfully')
+      toast.success('Quiz deleted successfully')
       fetchQuizzes()
     }
     catch(err){
       console.log(err)
-      alert('Failed to delete quiz')
+      toast.error('Failed to delete quiz')
     }
   }
    const fetchQuizzes =useCallback( async ()=>{

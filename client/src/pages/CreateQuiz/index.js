@@ -4,6 +4,7 @@ import Layout from '../../components/Layout'
 import CustomButton from '../../components/CustomButton'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
+import {toast} from 'react-toastify'
 
 import './index.css'
 
@@ -133,7 +134,7 @@ const CreateQuiz = () => {
 
   const removeQuestion = index => {
     if (questions.length === 1) {
-      alert('At least one question is required.')
+      toast.warn('At least one question is required.')
       return
     }
 
@@ -170,13 +171,13 @@ const CreateQuiz = () => {
         }
       )
 
-      alert('Quiz created successfully.')
+      toast.success('Quiz created successfully.')
 
       navigate('/instructor')
     } catch (err) {
       console.log(err)
 
-      alert(
+      toast.error(
         err.response?.data?.message ||
           'Failed to create quiz.'
       )
