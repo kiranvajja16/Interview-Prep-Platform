@@ -1,0 +1,153 @@
+.quiz-container{
+    max-width:900px;
+    margin:30px auto;
+}
+
+.quiz-header{
+    background:#ffffff;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.quiz-header h1{
+    margin:0;
+    color:#2563eb;
+    font-size:32px;
+}
+
+.quiz-header p{
+    color:#64748b;
+    margin-top:10px;
+    font-size:16px;
+}
+
+.quiz-info{
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+    font-weight:600;
+    color:#334155;
+}
+
+.progress-bar{
+    margin-top:20px;
+    width:100%;
+    height:12px;
+    background:#e2e8f0;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    background:#2563eb;
+    transition:width .4s ease;
+}
+
+.question-card{
+    background:#ffffff;
+    border-radius:15px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.question-card h2{
+    margin:0;
+    color:#1e293b;
+}
+
+.question-text{
+    margin-top:15px;
+    margin-bottom:20px;
+    font-size:18px;
+    color:#334155;
+    font-weight:500;
+}
+
+.options-container{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.option-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:15px;
+    border:2px solid #e2e8f0;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+    background:#ffffff;
+}
+
+.option-card:hover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.option-card.selected{
+    border-color:#2563eb;
+    background:#dbeafe;
+}
+
+.option-card input{
+    transform:scale(1.2);
+    cursor:pointer;
+}
+
+.option-card span{
+    font-size:16px;
+    color:#1e293b;
+}
+
+.submit-section{
+    text-align:center;
+    margin-top:35px;
+}
+
+.submit-btn{
+    padding:14px 40px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.submit-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+@media(max-width:768px){
+
+    .quiz-container{
+        margin:15px;
+    }
+
+    .quiz-header{
+        padding:20px;
+    }
+
+    .quiz-info{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .question-card{
+        padding:20px;
+    }
+
+    .submit-btn{
+        width:100%;
+    }
+
+}

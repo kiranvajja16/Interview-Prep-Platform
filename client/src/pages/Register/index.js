@@ -1,6 +1,8 @@
 import {useState} from 'react'
-import {useNavigate, Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import api from '../../services/api'
+import CustomButton from '../../components/CustomButton'
+import './index.css'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -19,8 +21,7 @@ const Register = () => {
         password,
       })
 
-      alert('Registration Successful')
-
+      alert('Registration Successful!')
       navigate('/login')
     } catch (err) {
       alert(err.response?.data?.message || 'Registration Failed')
@@ -28,49 +29,72 @@ const Register = () => {
   }
 
   return (
-    <div>
-      <h1>Create Account</h1>
+    <div className="auth-container">
+      <div className="auth-card">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
+        <h1 className="auth-title">
+          Interview Prep Platform
+        </h1>
 
-        <br />
-        <br />
+        <p className="auth-subtitle">
+          Create Your Account
+        </p>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
+        <form onSubmit={handleSubmit}>
 
-        <br />
-        <br />
+          <div className="form-group">
+            <label>Name</label>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
+            <input
+              type="text"
+              placeholder="Enter Your Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              required
+            />
+          </div>
 
-        <br />
-        <br />
-        <button type="submit">
-          Register
-        </button>
-      </form>
+          <div className="form-group">
+            <label>Email</label>
 
-      <br />
+            <input
+              type="email"
+              placeholder="Enter Your Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-      <Link to="/login">
-        Already have an account?
-      </Link>
+          <div className="form-group">
+            <label>Password</label>
+
+            <input
+              type="password"
+              placeholder="Enter Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <CustomButton
+            text="Register"
+            type="submit"
+            variant="success"
+          />
+
+        </form>
+
+        <p className="bottom-text">
+          Already have an account?
+
+          <Link to="/login">
+            Login
+          </Link>
+        </p>
+
+      </div>
     </div>
   )
 }

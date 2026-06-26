@@ -1,0 +1,65 @@
+.quiz-card{
+
+    background:#ffffff;
+
+    border-radius:14px;
+
+    padding:25px;
+
+    box-shadow:0 6px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.quiz-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+.quiz-title{
+
+    margin:0;
+
+    color:#1e293b;
+
+    font-size:22px;
+
+}
+
+.quiz-description{
+
+    color:#64748b;
+
+    line-height:1.5;
+
+    margin:0;
+
+}
+
+.quiz-count{
+
+    color:#2563eb;
+
+    font-weight:600;
+
+}
+
+.quiz-actions{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:10px;
+
+}

@@ -1,128 +1,411 @@
 import {useState} from 'react'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
+import Layout from '../../components/Layout'
+import CustomButton from '../../components/CustomButton'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
 
-const CreateQuiz = ()=>{
-    const navigate = useNavigate()
-    const {token}=useAuth()
+import './index.css'
 
-    const [title,setTitle] =useState('')
-    const [description,setDescription]=useState('')
-    const [questions,setQuestions]=useState([
-        {
-            question: '',
-            options: ['','','',''],
-            correctAnswer: '',
-        },
+const CreateQuiz = () => {
+  const navigate = useNavigate()
+  const {token} = useAuth()
+
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+
+  const [questions, setQuestions] = useState([
+    {
+      question: '',
+      options: ['', '', '', ''],
+      correctAnswer: '',
+    },
+  ])
+
+  const [errors, setErrors] = useState({})
+
+  // -----------------------------
+  // Validation
+  // -----------------------------
+
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!title.trim()) {
+      newErrors.title = 'Quiz title is required'
+    }
+
+    if (!description.trim()) {
+      newErrors.description = 'Quiz description is required'
+    }
+
+    questions.forEach((question, index) => {
+      if (!question.question.trim()) {
+        newErrors[`question-${index}`] =
+          'Question is required'
+      }
+
+      question.options.forEach((option, optionIndex) => {
+        if (!option.trim()) {
+          newErrors[`option-${index}-${optionIndex}`] =
+            'Option is required'
+        }
+      })
+
+      if (!question.correctAnswer.trim()) {
+        newErrors[`correct-${index}`] =
+          'Please select the correct answer'
+      }
+    })
+
+    setErrors(newErrors)
+
+    return Object.keys(newErrors).length === 0
+  }
+
+  // -----------------------------
+  // Question Handlers
+  // -----------------------------
+
+  const handleQuestionChange = (index, value) => {
+    const updatedQuestions = [...questions]
+
+    updatedQuestions[index].question = value
+
+    setQuestions(updatedQuestions)
+  }
+
+  const handleOptionChange = (
+    questionIndex,
+    optionIndex,
+    value
+  ) => {
+    const updatedQuestions = [...questions]
+
+    updatedQuestions[questionIndex].options[
+      optionIndex
+    ] = value
+
+    // If the selected correct answer is edited,
+    // clear it to avoid invalid data.
+
+    if (
+      updatedQuestions[questionIndex].correctAnswer ===
+      updatedQuestions[questionIndex].options[
+        optionIndex
+      ]
+    ) {
+      updatedQuestions[questionIndex].correctAnswer = ''
+    }
+
+    setQuestions(updatedQuestions)
+  }
+
+  const handleCorrectAnswerChange = (
+    index,
+    value
+  ) => {
+    const updatedQuestions = [...questions]
+
+    updatedQuestions[index].correctAnswer = value
+
+    setQuestions(updatedQuestions)
+  }
+
+  // -----------------------------
+  // Add Question
+  // -----------------------------
+
+  const addQuestion = () => {
+    setQuestions([
+      ...questions,
+      {
+        question: '',
+        options: ['', '', '', ''],
+        correctAnswer: '',
+      },
     ])
+  }
 
-    const handleQuestionChange = (index,value)=>{
-        const updatedQuestions=[...questions]
-        updatedQuestions[index].question=value
-        setQuestions(updatedQuestions)
-    }
-    const handleOptionChange=(questionIndex,optionIndex,value)=>{
-        const updatedQuestions = [...questions]
-        updatedQuestions[questionIndex].options[optionIndex]=value
-        setQuestions(updatedQuestions)
-    }
+  // -----------------------------
+  // Remove Question
+  // -----------------------------
 
-    const handleCorrectAnswerChange=(index,value)=>{
-        const updatedQuestions=[...questions]
-        updatedQuestions[index].correctAnswer=value
-        setQuestions(updatedQuestions)
+  const removeQuestion = index => {
+    if (questions.length === 1) {
+      alert('At least one question is required.')
+      return
     }
 
-    const handleAddQuestion =()=>{
-        setQuestions([...questions,{question:'',options:['','','',''],correctAnswer:'',},])
+    const updatedQuestions = questions.filter(
+      (_, i) => i !== index
+    )
+
+    setQuestions(updatedQuestions)
+  }
+
+  // -----------------------------
+  // Submit Quiz
+  // -----------------------------
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if (!validateForm()) {
+      return
     }
 
-    const handleSubmit = async e =>{
-        e.preventDefault()
-        try{
-            await api.post('/quizzes',{title,description,questions,},{headers:{
-                Authorization:`Bearer ${token}`,
-            },})
-            alert('Quiz created successfully')
-            navigate('/instructor')
+    try {
+      await api.post(
+        '/quizzes',
+        {
+          title,
+          description,
+          questions,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        catch(err){
-            console.log(err)
-            alert('Failed to create quiz')
-        }
+      )
+
+      alert('Quiz created successfully.')
+
+      navigate('/instructor')
+    } catch (err) {
+      console.log(err)
+
+      alert(
+        err.response?.data?.message ||
+          'Failed to create quiz.'
+      )
     }
+  }
 
     return (
-        <div>
-            <h1>Create Quiz</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder='Quiz Title' value={title}
-                onChange={e=>setTitle(e.target.value)}/>
-                <br/>
-                <br/>
-                 <textarea
-                placeholder="Description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
+    <Layout>
+      <div className="create-quiz-container">
+        <h1>Create Quiz</h1>
+
+        <form onSubmit={handleSubmit} noValidate>
+
+          {/* Quiz Title */}
+          <div className="form-group">
+            <label>Quiz Title</label>
+
+            <input
+              type="text"
+              placeholder="Enter quiz title"
+              value={title}
+              className={errors.title ? 'input-error' : ''}
+              onChange={e => setTitle(e.target.value)}
+            />
+
+            {errors.title && (
+              <p className="error">{errors.title}</p>
+            )}
+          </div>
+
+          {/* Description */}
+          <div className="form-group">
+            <label>Description</label>
+
+            <textarea
+              placeholder="Enter quiz description"
+              value={description}
+              className={errors.description ? 'input-error' : ''}
+              onChange={e => setDescription(e.target.value)}
+            />
+
+            {errors.description && (
+              <p className="error">
+                {errors.description}
+              </p>
+            )}
+          </div>
+
+          {/* Questions */}
+
+          {questions.map((question, index) => (
+            <div
+              className="question-card"
+              key={index}
+            >
+              <div className="question-header">
+                <h3>Question {index + 1}</h3>
+
+                {questions.length > 1 && (
+                  <CustomButton
+                    text="Remove"
+                    variant="danger"
+                    type="button"
+                    onClick={() =>
+                      removeQuestion(index)
+                    }
+                  />
+                )}
+              </div>
+
+              {/* Question */}
+
+              <div className="form-group">
+
+                <label>Question</label>
+
+                <input
+                  type="text"
+                  placeholder="Enter question"
+                  value={question.question}
+                  className={
+                    errors[`question-${index}`]
+                      ? 'input-error'
+                      : ''
+                  }
+                  onChange={e =>
+                    handleQuestionChange(
+                      index,
+                      e.target.value
+                    )
+                  }
                 />
-                <br/>
-                <br/>
-                {questions.map((question,index)=>(
-                    <div key={index}>
-                        <h3>Question {index+1}</h3>
-                        <input type="text" placeholder='Question' value={question.question}
-                        onChange={e => handleQuestionChange(index,e.target.value)}/>
-                        <br/><br/>
-                         <input
-                            type="text"
-                            placeholder="Option 1"
-                            value={question.options[0]}
-                            onChange={e => handleOptionChange(index,0,e.target.value)}
-                        />
-                        <br /><br />
 
-                        <input
-                            type="text"
-                            placeholder="Option 2"
-                            value={question.options[1]}
-                            onChange={e => handleOptionChange(index,1,e.target.value)}
-                        />
-                        <br /><br />
-                        <input
-                            type="text"
-                            placeholder="Option 3"
-                            value={question.options[2]}
-                            onChange={e => handleOptionChange(index,2,e.target.value)}
-                        />
-                        <br /><br />
-                        <input
-                            type="text"
-                            placeholder="Option 4"
-                            value={question.options[3]}
-                            onChange={e => handleOptionChange(index,3,e.target.value)}
-                        />
-                        <br /><br />
+                {errors[`question-${index}`] && (
+                  <p className="error">
+                    {
+                      errors[
+                        `question-${index}`
+                      ]
+                    }
+                  </p>
+                )}
+              </div>
 
-                        <input
-                            type="text"
-                            placeholder="Correct Answer"
-                            value={question.correctAnswer}
-                            onChange={e=>{handleCorrectAnswerChange(index,e.target.value)}}
-                        />
+              {/* Options */}
 
-                    <hr />      
-                    </div>
-                ))}
-                <button type="button" onClick={handleAddQuestion}>
-                    Add Question
-                </button>
-                <button type="submit">
-                    Create Quiz
-                </button>
-            </form>
-        </div>
-    )
+              {question.options.map(
+                (option, optionIndex) => (
+                  <div
+                    key={optionIndex}
+                    className="form-group"
+                  >
+                    <label>
+                      Option {optionIndex + 1}
+                    </label>
+
+                    <input
+                      type="text"
+                      placeholder={`Option ${
+                        optionIndex + 1
+                      }`}
+                      value={option}
+                      className={
+                        errors[
+                          `option-${index}-${optionIndex}`
+                        ]
+                          ? 'input-error'
+                          : ''
+                      }
+                      onChange={e =>
+                        handleOptionChange(
+                          index,
+                          optionIndex,
+                          e.target.value
+                        )
+                      }
+                    />
+
+                    {errors[
+                      `option-${index}-${optionIndex}`
+                    ] && (
+                      <p className="error">
+                        {
+                          errors[
+                            `option-${index}-${optionIndex}`
+                          ]
+                        }
+                      </p>
+                    )}
+                  </div>
+                )
+              )}
+
+              {/* Correct Answer */}
+
+              <div className="form-group">
+
+                <label>
+                  Correct Answer
+                </label>
+
+                <select
+                  value={question.correctAnswer}
+                  className={
+                    errors[`correct-${index}`]
+                      ? 'input-error'
+                      : ''
+                  }
+                  onChange={e =>
+                    handleCorrectAnswerChange(
+                      index,
+                      e.target.value
+                    )
+                  }
+                >
+                  <option value="">
+                    Select Correct Answer
+                  </option>
+
+                  {question.options.map(
+                    (option, optionIndex) => (
+                      <option
+                        key={optionIndex}
+                        value={option}
+                        disabled={!option}
+                      >
+                        {option ||
+                          `Option ${
+                            optionIndex + 1
+                          }`}
+                      </option>
+                    )
+                  )}
+                </select>
+
+                {errors[`correct-${index}`] && (
+                  <p className="error">
+                    {
+                      errors[
+                        `correct-${index}`
+                      ]
+                    }
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+
+          <div className="button-group">
+
+            <CustomButton
+              text="Add Question"
+              variant="primary"
+              type="button"
+              onClick={addQuestion}
+            />
+
+            <CustomButton
+              text="Create Quiz"
+              variant="success"
+              type="submit"
+            />
+
+          </div>
+
+        </form>
+      </div>
+    </Layout>
+  )
 }
 
 export default CreateQuiz

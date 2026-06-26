@@ -1,0 +1,17 @@
+.layout{
+
+    display:flex;
+
+    background:#f8fafc;
+
+    min-height:calc(100vh - 70px);
+
+}
+
+.main-content{
+
+    flex:1;
+
+    padding:30px;
+
+}

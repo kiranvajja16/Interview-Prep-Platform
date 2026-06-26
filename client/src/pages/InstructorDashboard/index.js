@@ -2,7 +2,9 @@ import { useCallback, useEffect,useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
-
+import Layout from '../../components/Layout'
+import CustomButton from '../../components/CustomButton'
+import QuizCard from '../../components/QuizCard'
 
 const InstructorDashboard = () => {
   const {user, token,logout} = useAuth()
@@ -57,29 +59,26 @@ const InstructorDashboard = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <h1>Welcome {user.name}</h1>
-      <button onClick={()=> navigate('/create-quiz')}>
-        Create New Quiz
-      </button>
+      <CustomButton text="Create New Quiz" variant='success'  onClick={()=> navigate('/create-quiz')}/>
+
 
       <hr/>
-      {quizzes.map(quiz=>(
-        <div key={quiz._id}>
-          <h3>{quiz.title}</h3>
-          <p>{quiz.description}</p>
-          <button onClick={()=> navigate(`/edit-quiz/${quiz._id}`)}>
-            Edit
-          </button>
-          <button onClick={()=>handleDelete(quiz._id)}>
-            Delete
-          </button>
-        </div>
-      ))}
-      <button onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
+      <div className="quiz-grid">
+        {quizzes.map(quiz => (
+        <QuizCard
+          key={quiz._id}
+          quiz={quiz}
+          role="instructor"
+          onEdit={id => navigate(`/edit-quiz/${id}`)}
+          onDelete={handleDelete}
+        />
+        ))}
+
+      </div>
+      <CustomButton text="Logout" variant="danger" onClick={handleLogout}/>
+    </Layout>
   )
 }
 

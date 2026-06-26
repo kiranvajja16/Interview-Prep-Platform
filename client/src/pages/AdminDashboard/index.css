@@ -1,0 +1,138 @@
+.admin-dashboard{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:35px;
+
+}
+
+.dashboard-header{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:25px;
+
+    box-shadow:0px 4px 12px rgba(0,0,0,.08);
+
+}
+
+.dashboard-header h1{
+
+    margin:0;
+
+    color:#1e293b;
+
+    font-size:30px;
+
+}
+
+.dashboard-header p{
+
+    margin-top:10px;
+
+    color:#64748b;
+
+    font-size:16px;
+
+}
+
+
+.users-section{
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+
+}
+
+.users-heading{
+
+    margin-top:0;
+
+    margin-bottom:25px;
+
+    color:#1e293b;
+
+}
+
+.action-buttons{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+}
+
+.already-instructor{
+
+    color:#16a34a;
+
+    font-weight:600;
+
+}
+.dashboard-card{
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:25px;
+
+    box-shadow:0px 4px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    border-left:5px solid #2563eb;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0px 10px 20px rgba(0,0,0,.15);
+
+}
+
+.card-title{
+
+    margin:0;
+
+    color:#64748b;
+
+    font-size:16px;
+
+    font-weight:500;
+
+}
+
+.card-value{
+
+    margin-top:15px;
+
+    color:#1e293b;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+}
+.analytics-section{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:25px;
+
+}

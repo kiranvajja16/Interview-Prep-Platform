@@ -2,8 +2,9 @@ import {useEffect,useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
-
-
+import Layout from '../../components/Layout'
+import CustomButton from '../../components/CustomButton'
+import QuizCard from '../../components/QuizCard'
 
 const CandidateDashboard = () => {
   const {user,token,logout}=useAuth()
@@ -13,7 +14,7 @@ const CandidateDashboard = () => {
 
   useEffect(()=>{
     fetchQuizzes()
-  },[])
+})
 
   const fetchQuizzes=async ()=>{
     try{
@@ -35,28 +36,29 @@ const CandidateDashboard = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <h1>Welcome {user.name}</h1>
       <h2>Available Quizzes</h2>
-      {quizzes.map(quiz=>(
-        <div key={quiz._id}>
-          <h3>{quiz.title}</h3>
-          <p>{quiz.description}</p>
-          <button onClick={()=>navigate(`/quiz/${quiz._id}`)}>
-            Take Quiz
-          </button>
-        </div>
+      <div className="quiz-grid">
+
+      {quizzes.map(quiz => (
+
+      <QuizCard
+        key={quiz._id}
+        quiz={quiz}
+        role="candidate"
+        onTakeQuiz={id => navigate(`/quiz/${id}`)}
+      />
       ))}
+
+</div>
       <br/>
-      <button onClick={()=>navigate('/results')}>
-        My Results
-      </button>
+      <CustomButton text='My Results' variant='success' onClick={()=>navigate('/results')}/>
+
       <br/>
       <br/>
-      <button onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
+      <CustomButton text="Logout" variant='danger' onClick={handleLogout}/>
+    </Layout>
   )
 
 }

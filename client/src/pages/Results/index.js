@@ -1,50 +1,138 @@
-import { useEffect,useState } from 'react'
+import {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import Layout from '../../components/Layout'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
 
-
+import './index.css'
 
 const Results = () => {
-  const {token}=useAuth()
-  const [results,setResults]=useState([])
+  const navigate = useNavigate()
 
-  useEffect(()=>{
-    const fetchResults=async ()=>{
-    try{
-        const response= await api.get('/results/my-results',{
-          headers:{
-            Authorization:`Bearer ${token}`,
-          },
-        })
-        setResults(response.data)
-    }
-    catch(err){
+  const {token} = useAuth()
+
+  const [results, setResults] = useState([])
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchResults()
+  }, [])
+
+  const fetchResults = async () => {
+    try {
+      const response = await api.get('/results/my-results', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setResults(response.data)
+
+      setLoading(false)
+    } catch (err) {
       console.log(err)
-      alert('Failed to load results')
+
+      setLoading(false)
     }
   }
-    fetchResults()
-  },[token])
 
-  
+  const getPerformance = percentage => {
+    if (percentage >= 90) {
+      return 'Excellent 🎉'
+    }
 
-  return(
-    <div>
-      <h1>My Results</h1>
-      {results.length === 0 ? (
-        <p>No quiz attempts yet.</p>
-      ):(
-        results.map(result => (
-          <div key={result._id}>
-            <h3>{result.quiz.title}</h3>
-            <p>Score : {result.score}</p>
-            <p>Total Questions : {result.totalQuestions}</p>
-            <p>Percentage : {result.percentage}%</p>
-            <hr/>
+    if (percentage >= 75) {
+      return 'Very Good 👍'
+    }
+
+    if (percentage >= 50) {
+      return 'Good 🙂'
+    }
+
+    return 'Needs Improvement 📚'
+  }
+
+  if (loading) {
+    return (
+      <Layout>
+
+        <h2>Loading Results...</h2>
+
+      </Layout>
+    )
+  }
+
+  return (
+    <Layout>
+
+      <div className="results-container">
+
+        <h1>My Quiz Results</h1>
+
+        {results.length === 0 ? (
+          <div className="empty-results">
+
+            <h2>No Results Yet</h2>
+
+            <p>
+              Complete a quiz to view your results.
+            </p>
+
+            <button
+              className="dashboard-btn"
+              onClick={() => navigate('/candidate')}
+            >
+              Go To Dashboard
+            </button>
+
           </div>
-        ))
-      )}
-    </div>
+        ) : (
+          <div className="results-grid">
+
+            {results.map(result => (
+              <div
+                className="result-card"
+                key={result._id}
+              >
+
+                <h2>{result.quiz.title}</h2>
+
+                <div className="score-box">
+
+                  <h3>Score</h3>
+
+                  <p>
+                    {result.score} / {result.totalQuestions}
+                  </p>
+
+                </div>
+
+                <div className="percentage-box">
+
+                  <h3>Percentage</h3>
+
+                  <p>
+                    {result.percentage.toFixed(0)}%
+                  </p>
+
+                </div>
+
+                <div className="performance-box">
+
+                  {getPerformance(result.percentage)}
+
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
+      </div>
+
+    </Layout>
   )
 }
 
