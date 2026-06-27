@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api=axios.create({
-    baseURL:'https://interview-prep-backend-34tz.onrender.com/',
+    baseURL:'https://interview-prep-backend-34tz.onrender.com/api',
     headers:{
         'Content-Type':'application/json',
     },
