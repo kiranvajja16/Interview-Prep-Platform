@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState,useCallback} from 'react'
 import Layout from '../../components/Layout'
 import api from '../../services/api'
 import {useAuth} from '../../context/AuthContext'
@@ -24,9 +24,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchAnalytics()
     fetchUsers()
-  }, [])
+  }, [fetchAnalytics,fetchUsers])
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       const response = await api.get('/admin/analytics', {
         headers: {
@@ -38,9 +38,9 @@ const AdminDashboard = () => {
     } catch (err) {
       console.log(err)
     }
-  }
+  },[token])
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await api.get('/admin/users', {
         headers: {
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
     } catch (err) {
       console.log(err)
     }
-  }
+  },[token])
 
   const handlePromote = async id => {
     try {

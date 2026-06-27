@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState,useCallback} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 import Layout from '../../components/Layout'
 import api from '../../services/api'
@@ -27,9 +27,11 @@ const QuizPage = () => {
 
   useEffect(() => {
     fetchQuiz()
-  }, [id, token])
 
-  const fetchQuiz = async () => {
+  
+  }, [fetchQuiz])
+
+  const fetchQuiz = useCallback( async () => {
     try {
       const response = await api.get(`/quizzes/${id}`, {
         headers: {
@@ -47,7 +49,7 @@ const QuizPage = () => {
 
       navigate('/candidate')
     }
-  }
+  },[id,token,navigate])
 
   // --------------------------
   // Handle Answer Selection

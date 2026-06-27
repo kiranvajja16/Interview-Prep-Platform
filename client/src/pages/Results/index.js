@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState,useCallback} from 'react'
 import {useNavigate} from 'react-router-dom'
 import Layout from '../../components/Layout'
 import api from '../../services/api'
@@ -18,9 +18,9 @@ const Results = () => {
 
   useEffect(() => {
     fetchResults()
-  }, [])
+  }, [fetchResults])
 
-  const fetchResults = async () => {
+  const fetchResults = useCallback( async () => {
     try {
       const response = await api.get('/results/my-results', {
         headers: {
@@ -36,7 +36,7 @@ const Results = () => {
 
       setLoading(false)
     }
-  }
+  },[token])
 
   const getPerformance = percentage => {
     if (percentage >= 90) {

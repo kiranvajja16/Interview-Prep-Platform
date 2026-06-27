@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState,useCallback} from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
 import Layout from '../../components/Layout'
 import CustomButton from '../../components/CustomButton'
@@ -29,9 +29,9 @@ const EditQuiz = () => {
 
   useEffect(() => {
     fetchQuiz()
-  },[id,token])
+  },[fetchQuiz])
 
-  const fetchQuiz = async () => {
+  const fetchQuiz = useCallback(async () => {
     try {
       const response = await api.get(`/quizzes/${id}`, {
         headers: {
@@ -51,7 +51,7 @@ const EditQuiz = () => {
       toast.error('Failed to load quiz')
       navigate('/instructor')
     }
-  }
+  },[id,token,navigate])
 
   // -------------------------
   // Validation
