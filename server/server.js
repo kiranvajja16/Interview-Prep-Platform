@@ -23,7 +23,7 @@ app.use('/api/quizzes',quizRoutes)
 app.use('/api/results',resultRoutes)
 
 app.get('/', (req, res) => {
-  res.send('Server Running')
+  res.send('Server Running!!!!!')
 })
 
 const PORT = process.env.PORT || 5000
