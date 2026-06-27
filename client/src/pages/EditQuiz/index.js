@@ -27,11 +27,7 @@ const EditQuiz = () => {
   // Fetch Quiz
   // -------------------------
 
-  useEffect(() => {
-    fetchQuiz()
-  },[fetchQuiz])
-
-  const fetchQuiz = useCallback(async () => {
+    const fetchQuiz = useCallback(async () => {
     try {
       const response = await api.get(`/quizzes/${id}`, {
         headers: {
@@ -52,6 +48,12 @@ const EditQuiz = () => {
       navigate('/instructor')
     }
   },[id,token,navigate])
+
+  useEffect(() => {
+    fetchQuiz()
+  },[fetchQuiz])
+
+
 
   // -------------------------
   // Validation

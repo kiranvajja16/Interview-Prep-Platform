@@ -16,11 +16,7 @@ const Results = () => {
 
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchResults()
-  }, [fetchResults])
-
-  const fetchResults = useCallback( async () => {
+const fetchResults = useCallback( async () => {
     try {
       const response = await api.get('/results/my-results', {
         headers: {
@@ -37,6 +33,12 @@ const Results = () => {
       setLoading(false)
     }
   },[token])
+
+  useEffect(() => {
+    fetchResults()
+  }, [fetchResults])
+
+  
 
   const getPerformance = percentage => {
     if (percentage >= 90) {

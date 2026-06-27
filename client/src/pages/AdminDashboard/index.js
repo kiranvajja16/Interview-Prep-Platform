@@ -21,10 +21,19 @@ const AdminDashboard = () => {
 
   const [users, setUsers] = useState([])
 
-  useEffect(() => {
-    fetchAnalytics()
-    fetchUsers()
-  }, [fetchAnalytics,fetchUsers])
+  const fetchUsers = useCallback(async () => {
+    try {
+      const response = await api.get('/admin/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setUsers(response.data)
+    } catch (err) {
+      console.log(err)
+    }
+  },[token])
 
   const fetchAnalytics = useCallback(async () => {
     try {
@@ -40,19 +49,14 @@ const AdminDashboard = () => {
     }
   },[token])
 
-  const fetchUsers = useCallback(async () => {
-    try {
-      const response = await api.get('/admin/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+  useEffect(() => {
+    fetchAnalytics()
+    fetchUsers()
+  }, [fetchAnalytics,fetchUsers])
 
-      setUsers(response.data)
-    } catch (err) {
-      console.log(err)
-    }
-  },[token])
+  
+
+  
 
   const handlePromote = async id => {
     try {

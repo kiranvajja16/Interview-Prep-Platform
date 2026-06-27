@@ -23,15 +23,10 @@ const QuizPage = () => {
 
   // --------------------------
   // Fetch Quiz
-  // --------------------------
+  // --
+  // ------------------------
 
-  useEffect(() => {
-    fetchQuiz()
-
-  
-  }, [fetchQuiz])
-
-  const fetchQuiz = useCallback( async () => {
+ const fetchQuiz = useCallback( async () => {
     try {
       const response = await api.get(`/quizzes/${id}`, {
         headers: {
@@ -50,6 +45,14 @@ const QuizPage = () => {
       navigate('/candidate')
     }
   },[id,token,navigate])
+
+  useEffect(() => {
+    fetchQuiz()
+
+  
+  }, [fetchQuiz])
+
+ 
 
   // --------------------------
   // Handle Answer Selection
