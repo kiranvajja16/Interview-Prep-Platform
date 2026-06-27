@@ -1,5 +1,5 @@
 const User= require('../models/User')
-const Quiz=require('../models/quiz')
+const Quiz=require('../models/Quiz')
 const Result=require('../models/Result')
 
 const getAllUsers=async(req,res)=>{
